@@ -1,8 +1,10 @@
 package org.fasttrackit.onlineshopapi;
 
 import org.fasttrackit.onlineshopapi.domain.Product;
+import org.fasttrackit.onlineshopapi.domain.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshopapi.service.ProductService;
 import org.fasttrackit.onlineshopapi.transfer.CreateProductRequest;
+import org.fasttrackit.onlineshopapi.transfer.UpdateProductRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,13 @@ public class ProductServiceIntegrationTest {
 
     @Test
     public void testCreateProduct_whenValidRequest_thenReturnStoredProduct(){
-        // what we're testing_
+        // what we're testing_if the request was valid (success)_ then add the product to the table and store it
 
+        testCreateProductMethod();
+
+    }
+
+    private Product testCreateProductMethod() {
         CreateProductRequest request = new CreateProductRequest();
         request.setName("Shoes");
         request.setPrice(99.99);
@@ -41,11 +48,43 @@ public class ProductServiceIntegrationTest {
         assertThat(product.getPrice(), is(request.getPrice()));
         assertThat(product.getQuantity(), is(request.getQuantity()));
 
+        return product;
     }
+
 
     @Test(expected = ConstraintViolationException.class)
     public void testCreateProduct_whenMissingMandatoryDetails_thenThrowConstraintViolationException(){
-
+          // we want to test creating a product_when one or all details are missing (name, id..)_then throw the following exception
         productService.createProduct(new CreateProductRequest());
+     testCreateProductMethod();
     }
+
+    @Test
+    public void testUpdateProduct_whenValidRequest_thenReturnStoredProduct() throws ResourceNotFoundException {
+        testCreateProductMethod();
+
+        Product product = productService.getProduct(2);
+
+    }
+
+    @Test
+    public void testUpdateProduct_whenValidRequest_thenReturnUpdatedProduct() throws ResourceNotFoundException {
+        Product product = testCreateProductMethod();
+
+        UpdateProductRequest request = new UpdateProductRequest();
+        request.setName(product.getName() + "updated");
+        request.setQuantity(product.getQuantity() + 10);
+        request.setPrice(product.getPrice() + 10);
+
+        Product updatedProducct = productService.updateProduct(product.getId(), request);
+
+        assertThat(updatedProducct, notNullValue());
+        assertThat(updatedProducct.getId(), is(product.getId()));
+        assertThat(updatedProducct.getName(), is(request.getName()));
+        assertThat(updatedProducct.getQuantity(), is(request.getQuantity()));
+        assertThat(updatedProducct.getPrice(), is(request.getPrice()));
+
+    }
+
+    // todo: add more tests more scernarios
 }
