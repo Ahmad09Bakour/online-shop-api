@@ -16,6 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByNameContainingAndQuantityGreaterThanEqual(String partialName, int minimumQuantity, Pageable pageable);
 
     // an example of named queries, use JPQL queries if nativeQuery is fault (by default)
-//    @Query(value = "SELECT * FROM product", nativeQuery = true)
+//    @Query(value = "SELECT * FROM product", nativeQuery = true). spring boot won't accept us typing SQL but nativeQuery will allow us to
 //    Product findBySomeComplexLogic();
 }
