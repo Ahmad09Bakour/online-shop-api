@@ -17,7 +17,7 @@ public class CustomerSteps {
     @Autowired
     private CustomerService customerService;
 
-    public Customer testCreateCustomerMethod() {
+    public Customer createCustomerMethod() {
         CreateCustomerRequest request = new CreateCustomerRequest();
         request.setName("John");
 

@@ -1,10 +1,3 @@
-#in boot spring apps, we get this file with the name "application.properties" and we should change it to "yml"
-#and this is what we got from "spring.io" to create our "application.properties" file:
-#spring:jpa.hibernate.ddl-auto=create
-#spring.datasource.url=jdbc:mysql://localhost:3306/online-shop
-#spring.datasource.username=online-shop-admin
-#spring.datasource.password=1234abc
-#But we need to do some changes to the code as we changed the name of the file as follows:
 
 spring:
   jpa:

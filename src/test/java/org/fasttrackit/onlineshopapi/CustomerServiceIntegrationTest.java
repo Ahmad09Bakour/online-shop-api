@@ -1,7 +1,5 @@
 package org.fasttrackit.onlineshopapi;
 
-import org.fasttrackit.onlineshopapi.domain.Customer;
-import org.fasttrackit.onlineshopapi.domain.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshopapi.service.CustomerService;
 import org.fasttrackit.onlineshopapi.setps.CustomerSteps;
 import org.fasttrackit.onlineshopapi.transfer.customer.CreateCustomerRequest;
@@ -15,7 +13,6 @@ import javax.validation.ConstraintViolationException;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
@@ -31,15 +28,10 @@ public class CustomerServiceIntegrationTest {
 
     @Test
     public void testCreateCustomer_whenValidRequest_thenReturnStoredCustomer(){
-        // what we're testing_if the request was valid (success)_ then add the customer to the table and store it
 
-
-        customerSteps.testCreateCustomerMethod();
+        customerSteps.createCustomerMethod();
 
     }
-
-
-
 
     @Test(expected = ConstraintViolationException.class)
     public void testCreateCustomer_whenMissingMandatoryDetails_thenThrowConstraintViolationException(){
@@ -49,7 +41,7 @@ public class CustomerServiceIntegrationTest {
 
 //    @Test
 //    public void testUpdateCustomer_whenValidRequest_thenReturnUpdatedCustomer() throws ResourceNotFoundException {
-//        Customer customer = testCreateCustomerMethod();
+//        Customer customer = createCustomerMethod();
 //
 //        UpdateCustomerRequest request = new UpdateCustomerRequest();
 //        request.setName(customer.getName() + "updated");
