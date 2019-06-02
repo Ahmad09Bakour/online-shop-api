@@ -6,6 +6,7 @@ import org.fasttrackit.onlineshopapi.domain.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshopapi.service.ProductService;
 import org.fasttrackit.onlineshopapi.transfer.product.CreateProductRequest;
 import org.fasttrackit.onlineshopapi.transfer.product.GetProductsRequeset;
+import org.fasttrackit.onlineshopapi.transfer.product.ProductResponse;
 import org.fasttrackit.onlineshopapi.transfer.product.UpdateProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 
 @RestController     // this  should be added for the controller class(the servlet) for spring boot to work
 @RequestMapping("/products")
+@CrossOrigin
 public class ProductController {    // this class represents the servlet
 
     private final ProductService productService;
@@ -57,9 +59,9 @@ public class ProductController {    // this class represents the servlet
     }
 
     @GetMapping
-    public ResponseEntity<Page<Product>> getProducts(@Valid GetProductsRequeset request, Pageable pageable){
+    public ResponseEntity<Page<ProductResponse>> getProducts(@Valid GetProductsRequeset request, Pageable pageable){
 
-        Page<Product> response = productService.getProducts(request, pageable);
+        Page<ProductResponse> response = productService.getProducts(request, pageable);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

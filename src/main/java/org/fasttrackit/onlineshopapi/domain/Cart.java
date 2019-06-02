@@ -10,7 +10,8 @@ public class Cart {
     @Id
     private long id;
 
-    @OneToOne(fetch = FetchType.LAZY) // this
+    @OneToOne(fetch = FetchType.LAZY) // LAZY will allow us to get only the id or what we need from that object, not all
+    // it's parameters and what it contains ... the opposite of LAZY is EAGER.
     @MapsId // this annotation is to get the id of the customer only, not all the customer's details....
     private Customer customer;
 
