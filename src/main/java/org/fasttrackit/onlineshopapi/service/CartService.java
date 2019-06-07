@@ -6,11 +6,17 @@ import org.fasttrackit.onlineshopapi.domain.Product;
 import org.fasttrackit.onlineshopapi.domain.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshopapi.persistence.CartRepository;
 import org.fasttrackit.onlineshopapi.transfer.cart.AddProductToCartRequest;
+import org.fasttrackit.onlineshopapi.transfer.cart.CartResponse;
+import org.fasttrackit.onlineshopapi.transfer.product.ProductResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class CartService {
@@ -34,7 +40,8 @@ public class CartService {
     // annotation that will require multiple objects (such as Product, Customer...) to be added to the same
     // method and as a result from their logic connection that must be perfectly successful. otherwise, this annotation
     // will leave everything Unchanged.
-    public Cart addProductToCart(AddProductToCartRequest request) throws ResourceNotFoundException {
+    // we created CartResponse class for the same reason with ProductResponse, Go ProductService for more info
+    public CartResponse addProductToCart(AddProductToCartRequest request) throws ResourceNotFoundException {
         //customer needs to be retrieved from the db so it's added on Hibernate's session
         // we could've typed: Customer customer = new Customer >> request=customer.getId();
         // but the annotation won't allow that, because we need to call the main Customer object from the service to
@@ -49,7 +56,16 @@ public class CartService {
             cart.addProduct(product); // adding he product that we jsut created
         }
 
-        return cartRepository.save(cart);
+        Cart savedCart = cartRepository.save(cart);
+
+        List<ProductResponse> productResponses =
+                productService.getProductResponses(new ArrayList<>(savedCart.getProducts()));
+
+        CartResponse cartResponse = new CartResponse();
+        cartResponse.setId(savedCart.getId()); // savedCart not cart object
+        cartResponse.setProducts(new HashSet<>(productResponses)); // convert again
+
+        return cartResponse;
 
     }
 

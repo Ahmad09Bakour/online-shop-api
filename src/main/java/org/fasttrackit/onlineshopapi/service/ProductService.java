@@ -98,14 +98,19 @@ public class ProductService {
         // web app, ajax will get all the info without ignoring anything about Objects, Relationships...etc.
         // AND FOR THAT we made a LIST of Products(ProductResponse) to separate it from (Page<Product>) which has
         // a relationship with the "Cart" that has a relationship as well with "Customer" that will need us to provide
-        // all data that "ajax" won't ignore and ask for("CROS" error)...
+        // all data that "ajax" won't ignore and ask for("Cross-Origin-Resource-Sharing (CORS)" error)...
         // SO we created a separate List of Products to let "ajax" interact with, AND we added the annotation
         // "CrossOrigin" to the "ProductController" class where added the list there too....
+        List<ProductResponse> productResponseList = getProductResponses(products.getContent());
+        return new PageImpl<>(productResponseList, pageable, products.getTotalElements());
+    }
+
+    public List<ProductResponse> getProductResponses(List<Product> products) {
         List<ProductResponse> productResponseList = new ArrayList<>();
-        for (Product product : products.getContent()){
+        for (Product product : products){
 
             // we can't use ObjectMapper because then we're adding the Springboot and we're getting the same error that
-            // we're trying to avoid. "CROS error"
+            // we're trying to avoid. "Cross-Origin-Resource-Sharing (CORS) error"
             ProductResponse productResponse = new ProductResponse();
             productResponse.setId(product.getId());
             productResponse.setName(product.getName());
@@ -114,6 +119,6 @@ public class ProductService {
 
             productResponseList.add(productResponse);
         }
-        return new PageImpl<>(productResponseList, pageable, products.getTotalElements());
+        return productResponseList;
     }
 }

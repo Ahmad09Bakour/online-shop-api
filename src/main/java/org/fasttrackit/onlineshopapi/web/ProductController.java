@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController     // this  should be added for the controller class(the servlet) for spring boot to work
 @RequestMapping("/products")
-@CrossOrigin
+@CrossOrigin // this annotation is to handle the error "Cross-Origin-Resource-Sharing (CORS)" which is why we created this class
 public class ProductController {    // this class represents the servlet
 
     private final ProductService productService;

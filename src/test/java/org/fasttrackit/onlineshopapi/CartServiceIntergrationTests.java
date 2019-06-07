@@ -8,6 +8,8 @@ import org.fasttrackit.onlineshopapi.service.CartService;
 import org.fasttrackit.onlineshopapi.setps.CustomerSteps;
 import org.fasttrackit.onlineshopapi.setps.ProductSteps;
 import org.fasttrackit.onlineshopapi.transfer.cart.AddProductToCartRequest;
+import org.fasttrackit.onlineshopapi.transfer.cart.CartResponse;
+import org.fasttrackit.onlineshopapi.transfer.product.ProductResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +50,14 @@ public class CartServiceIntergrationTests {
 		Product product = productSteps.createProductMethod();
 		request.setProductIds(Collections.singleton(product.getId()));
 
-		Cart cart = cartService.addProductToCart(request);
+		CartResponse cart = cartService.addProductToCart(request);
 
 		assertThat(cart, notNullValue()); // actual result and the expected result... we get the "cart" and it supposed to be notNullValue like want to
 		assertThat(customer.getId(), is(cart.getId()));
 		assertThat(cart.getProducts(), hasSize(greaterThan(0)));//first we need to make sure that the Set is not empty and has a size
 		// Set doesn't have a get method like lists
 		//using iterator().next() to go element by element through the Set
-		Product productFromCart = cart.getProducts().iterator().next(); // we store this logic in a variable because it will be long enough to complicate things
+		ProductResponse productFromCart = cart.getProducts().iterator().next(); // we store this logic in a variable because it will be long enough to complicate things
 		assertThat(productFromCart, notNullValue()); //second we need to make sure
 		assertThat(productFromCart.getId(), is(product.getId())); // and the last thing is to see if the id of the card is stored in the Cart
 

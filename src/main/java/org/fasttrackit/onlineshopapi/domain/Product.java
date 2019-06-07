@@ -70,7 +70,8 @@ public class Product {
         this.carts = carts;
     }
 
-    @Override // when we add equals() and hashCode() for the Product elements, we should skip the Cart element, otherwise it will run an infinite loop when we run the app
+    @Override // when we add equals() and hashCode() for the Product elements, we should skip the Cart element,
+    // otherwise it will run an infinite loop when we run the app
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
